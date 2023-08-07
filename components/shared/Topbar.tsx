@@ -8,9 +8,9 @@ const Topbar = () => {
   return (
     <nav className="topbar">
       <Link href={"/"} className="flex items-center gap-4">
-        <Image src={"/assets/logo.svg"} alt="logo" width={28} height={28} />
+        <Image src={"/assets/temp.svg"} alt="logo" width={35} height={34} />
         <p className="text-heading3-bold text-light-1 max-xs:hidden">
-          StichTalk
+          StitchTalk
         </p>
       </Link>
       <div className="flex items-center gap-1">

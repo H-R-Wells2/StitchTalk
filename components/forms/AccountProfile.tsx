@@ -8,7 +8,6 @@ import * as z from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -81,7 +80,6 @@ const AccountProfile = ({ user, btnTitle }: props) => {
         values.profile_photo = imgRes[0].fileUrl;
       }
     }
-    
 
     await updateUser({
       userId: user.id,
@@ -92,7 +90,7 @@ const AccountProfile = ({ user, btnTitle }: props) => {
       path: pathname,
     });
 
-
+    
     if (pathname === "/profile/edit") {
       router.back();
     } else {

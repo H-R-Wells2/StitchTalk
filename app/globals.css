@@ -79,7 +79,7 @@
   }
 
   .leftsidebar_link {
-    @apply relative flex justify-start gap-4 rounded-lg p-4;
+    @apply relative flex justify-start gap-4 rounded-lg p-4 transform ease-in-out duration-300;
   }
 
   .pagination {

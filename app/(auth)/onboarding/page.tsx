@@ -5,6 +5,7 @@ import { currentUser } from "@clerk/nextjs";
 const page = async() => {
 
   const user = await currentUser();
+  if (!user) return null;
 
   const userInfo={}
 

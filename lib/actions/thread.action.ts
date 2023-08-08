@@ -37,12 +37,12 @@ export async function createThread({
   }
 }
 
-export async function fetchPosts(pageNumber = 1, pageSize = 20) {
+export async function fetchThreads(pageNumber = 1, pageSize = 20) {
   connectToDb();
 
   const skipAmmount = (pageNumber - 1) * pageSize;
 
-  const postsQuery = Thread.find({ parentId: { $in: [null, undefined] } })
+  const threadsQuery = Thread.find({ parentId: { $in: [null, undefined] } })
     .sort({ createdAt: "desc" })
     .skip(skipAmmount)
     .limit(pageSize)
@@ -56,12 +56,12 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
       },
     });
 
-  const totalPostCount = await Thread.countDocuments({
+  const totalThreadCount = await Thread.countDocuments({
     parentId: { $in: [null, undefined] },
   });
-  const posts = await postsQuery.exec();
-  const isNext = totalPostCount > skipAmmount + posts.length;
-  return { posts, isNext };
+  const threads = await threadsQuery.exec();
+  const isNext = totalThreadCount > skipAmmount + threads.length;
+  return { threads, isNext };
 }
 
 export async function fetchThreadById(threadId: string) {
@@ -102,7 +102,6 @@ export async function fetchThreadById(threadId: string) {
   }
 }
 
-
 export async function addCommentToThread(
   threadId: string,
   commentText: string,
@@ -131,7 +130,7 @@ export async function addCommentToThread(
     await originalThread.save();
 
     revalidatePath(path);
-  } catch (error:any) {
+  } catch (error: any) {
     throw new Error(`Error adding comment to thread: ${error.message}`);
   }
 }

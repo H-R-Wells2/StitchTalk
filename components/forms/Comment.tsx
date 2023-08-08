@@ -20,7 +20,6 @@ import { Button } from "../ui/button";
 import { CommentValidation } from "@/lib/validations/thread";
 import { addCommentToThread } from "@/lib/actions/thread.action";
 
-
 interface Props {
   threadId: string;
   currentUserImg: string;
@@ -46,7 +45,7 @@ function Comment({ threadId, currentUserImg, currentUserId }: Props) {
     );
 
     form.reset();
-  };    
+  };
 
   return (
     <Form {...form}>

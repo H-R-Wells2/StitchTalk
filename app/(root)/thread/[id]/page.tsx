@@ -2,11 +2,10 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs";
 
 import ThreadCard from "@/components/cards/ThreadCard";
+
 import { fetchUser } from "@/lib/actions/user.action";
 import { fetchThreadById } from "@/lib/actions/thread.action";
 import Comment from "@/components/forms/Comment";
-
-
 
 export const revalidate = 0;
 
@@ -22,7 +21,7 @@ async function page({ params }: { params: { id: string } }) {
   const thread = await fetchThreadById(params.id);
 
   return (
-    <section className='relative'>
+    <section className="relative">
       <div>
         <ThreadCard
           id={thread._id}
@@ -35,30 +34,28 @@ async function page({ params }: { params: { id: string } }) {
           comments={thread.children}
         />
       </div>
-
-      <div className='mt-7'>
+      <div className="mt-7">
         <Comment
           threadId={params.id}
-          currentUserImg={user.imageUrl}
+          currentUserImg={userInfo.image}
           currentUserId={JSON.stringify(userInfo._id)}
         />
-      </div>
-
-      <div className='mt-10'>
-        {thread.children.map((childItem: any) => (
-          <ThreadCard
-            key={childItem._id}
-            id={childItem._id}
-            currentUserId={user.id}
-            parentId={childItem.parentId}
-            content={childItem.text}
-            author={childItem.author}
-            community={childItem.community}
-            createdAt={childItem.createdAt}
-            comments={childItem.children}
-            isComment
-          />
-        ))}
+        <div className="mt-10">
+          {thread.children.map((childItem: any) => (
+            <ThreadCard
+              key={childItem._id}
+              id={childItem._id}
+              currentUserId={user.id}
+              parentId={childItem.parentId}
+              content={childItem.text}
+              author={childItem.author}
+              community={childItem.community}
+              createdAt={childItem.createdAt}
+              comments={childItem.children}
+              isComment
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,9 +1,49 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import Thread from "../models/thread.model";
-import User from "../models/user.model";
+
 import { connectToDb } from "../mongoose";
+
+import User from "../models/user.model";
+import Thread from "../models/thread.model";
+import Community from "../models/community.model";
+
+export async function fetchThreads(pageNumber = 1, pageSize = 20) {
+  connectToDb();
+
+  const skipAmount = (pageNumber - 1) * pageSize;
+
+  const threadsQuery = Thread.find({ parentId: { $in: [null, undefined] } })
+    .sort({ createdAt: "desc" })
+    .skip(skipAmount)
+    .limit(pageSize)
+    .populate({
+      path: "author",
+      model: User,
+    })
+    .populate({
+      path: "community",
+      model: Community,
+    })
+    .populate({
+      path: "children",
+      populate: {
+        path: "author",
+        model: User,
+        select: "_id name parentId image",
+      },
+    });
+
+  const totalThreadsCount = await Thread.countDocuments({
+    parentId: { $in: [null, undefined] },
+  });
+
+  const threads = await threadsQuery.exec();
+
+  const isNext = totalThreadsCount > skipAmount + threads.length;
+
+  return { threads, isNext };
+}
 
 interface Params {
   text: string;
@@ -21,15 +61,26 @@ export async function createThread({
   try {
     connectToDb();
 
+    const communityIdObject = await Community.findOne(
+      { id: communityId },
+      { _id: 1 }
+    );
+
     const createdThread = await Thread.create({
       text,
       author,
-      community: null,
+      community: communityIdObject,
     });
 
     await User.findByIdAndUpdate(author, {
       $push: { threads: createdThread._id },
     });
+
+    if (communityIdObject) {
+      await Community.findByIdAndUpdate(communityIdObject, {
+        $push: { threads: createdThread._id },
+      });
+    }
 
     revalidatePath(path);
   } catch (error: any) {
@@ -37,31 +88,65 @@ export async function createThread({
   }
 }
 
-export async function fetchThreads(pageNumber = 1, pageSize = 20) {
-  connectToDb();
+async function fetchAllChildThreads(threadId: string): Promise<any[]> {
+  const childThreads = await Thread.find({ parentId: threadId });
 
-  const skipAmmount = (pageNumber - 1) * pageSize;
+  const descendantThreads = [];
+  for (const childThread of childThreads) {
+    const descendants = await fetchAllChildThreads(childThread._id);
+    descendantThreads.push(childThread, ...descendants);
+  }
 
-  const threadsQuery = Thread.find({ parentId: { $in: [null, undefined] } })
-    .sort({ createdAt: "desc" })
-    .skip(skipAmmount)
-    .limit(pageSize)
-    .populate({ path: "author", model: "User" })
-    .populate({
-      path: "children",
-      populate: {
-        path: "author",
-        model: "User",
-        select: "_id name parentId image",
-      },
-    });
+  return descendantThreads;
+}
 
-  const totalThreadCount = await Thread.countDocuments({
-    parentId: { $in: [null, undefined] },
-  });
-  const threads = await threadsQuery.exec();
-  const isNext = totalThreadCount > skipAmmount + threads.length;
-  return { threads, isNext };
+export async function deleteThread(id: string, path: string): Promise<void> {
+  try {
+    connectToDb();
+
+    const mainThread = await Thread.findById(id).populate("author community");
+
+    if (!mainThread) {
+      throw new Error("Thread not found");
+    }
+
+    const descendantThreads = await fetchAllChildThreads(id);
+
+    const descendantThreadIds = [
+      id,
+      ...descendantThreads.map((thread) => thread._id),
+    ];
+
+    const uniqueAuthorIds = new Set(
+      [
+        ...descendantThreads.map((thread) => thread.author?._id?.toString()),
+        mainThread.author?._id?.toString(),
+      ].filter((id) => id !== undefined)
+    );
+
+    const uniqueCommunityIds = new Set(
+      [
+        ...descendantThreads.map((thread) => thread.community?._id?.toString()),
+        mainThread.community?._id?.toString(),
+      ].filter((id) => id !== undefined)
+    );
+
+    await Thread.deleteMany({ _id: { $in: descendantThreadIds } });
+
+    await User.updateMany(
+      { _id: { $in: Array.from(uniqueAuthorIds) } },
+      { $pull: { threads: { $in: descendantThreadIds } } }
+    );
+
+    await Community.updateMany(
+      { _id: { $in: Array.from(uniqueCommunityIds) } },
+      { $pull: { threads: { $in: descendantThreadIds } } }
+    );
+
+    revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Failed to delete thread: ${error.message}`);
+  }
 }
 
 export async function fetchThreadById(threadId: string) {
@@ -73,22 +158,27 @@ export async function fetchThreadById(threadId: string) {
         path: "author",
         model: User,
         select: "_id id name image",
-      }) // Populate the author field with _id and username
+      })
       .populate({
-        path: "children", // Populate the children field
+        path: "community",
+        model: Community,
+        select: "_id id name image",
+      })
+      .populate({
+        path: "children",
         populate: [
           {
-            path: "author", // Populate the author field within children
+            path: "author",
             model: User,
-            select: "_id id name parentId image", // Select only _id and username fields of the author
+            select: "_id id name parentId image",
           },
           {
-            path: "children", // Populate the children field within children
-            model: Thread, // The model of the nested children (assuming it's the same "Thread" model)
+            path: "children",
+            model: Thread,
             populate: {
-              path: "author", // Populate the author field within nested children
+              path: "author",
               model: User,
-              select: "_id id name parentId image", // Select only _id and username fields of the author
+              select: "_id id name parentId image",
             },
           },
         ],
@@ -130,7 +220,8 @@ export async function addCommentToThread(
     await originalThread.save();
 
     revalidatePath(path);
-  } catch (error: any) {
-    throw new Error(`Error adding comment to thread: ${error.message}`);
+  } catch (err) {
+    console.error("Error while adding comment:", err);
+    throw new Error("Unable to add comment");
   }
 }

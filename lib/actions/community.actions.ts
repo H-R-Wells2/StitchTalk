@@ -67,14 +67,20 @@ export async function fetchCommunityDetails(id: string) {
   }
 }
 
-export async function fetchCommunityPosts(id: string) {
+export async function fetchCommunityPosts(id: string){
   try {
     connectToDb();
 
-    const communityPosts = await Community.findById(id).populate({
+    const communityPosts = await Community.findOne({ id: id })
+    .populate({
       path: "threads",
       model: Thread,
       populate: [
+        {
+          path: "community",
+          model: Community,
+          select: "name id image _id",
+        },
         {
           path: "author",
           model: User,
@@ -204,7 +210,6 @@ export async function removeUserFromCommunity(
       throw new Error("Community not found");
     }
 
-    // Remove the user's _id from the members array in the community
     await Community.updateOne(
       { _id: communityIdObject._id },
       { $pull: { members: userIdObject._id } }

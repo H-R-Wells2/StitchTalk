@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import {Heart} from "lucide-react"
 
 interface Props {
   id: string;
@@ -38,7 +39,7 @@ const ThreadCard = ({
 }: Props) => {
   return (
     <article
-      className={`flex flex-col w-full rounded-xl ${
+      className={`flex flex-col w-full rounded-xl transition-all duration-300 hover:shadow-[1px_1px_10px_1px] hover:shadow-purple-400 ${
         isComment ? "px-0 xs:px-7" : "bg-dark-2 p-7"
       }`}
     >

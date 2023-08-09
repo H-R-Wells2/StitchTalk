@@ -15,7 +15,7 @@ import {
 import { Textarea } from "../ui/textarea";
 import { usePathname, useRouter } from "next/navigation";
 import { ThreadValidation } from "@/lib/validations/thread";
-import { createThread } from "@/lib/actions/thread.action";
+import { createThread } from "@/lib/actions/thread.actions";
 
 
 interface Props {
@@ -69,7 +69,7 @@ const PostThread = ({ userId }: Props) => {
 
         <Button
           type="submit"
-          className="bg-primary-500 hover:bg-primary-500/70"
+          className="bg-gradient-to-br from-purple-300 via-primary-500 to-pink-400 hover:bg-gradient-to-br hover:from-purple-400 hover:via-primary-500 hover:to-pink-500"
         >
           Post Thread
         </Button>

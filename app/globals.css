@@ -79,7 +79,8 @@ select:-webkit-autofill:focus {
   }
 
   .topbar {
-    @apply fixed top-0 z-30 flex w-full items-center justify-between bg-dark-2/80 backdrop-blur-lg  px-6 py-3 shadow-md shadow-primary-500/20;
+    @apply fixed top-0 z-30 flex w-full items-center justify-between bg-dark-2/80 backdrop-blur-lg  px-6 py-3 shadow-md 
+    shadow-primary-500/20;
   }
 
   .bottombar {
@@ -99,7 +100,7 @@ select:-webkit-autofill:focus {
   }
 
   .leftsidebar_link {
-    @apply relative flex justify-start gap-4 rounded-lg p-4 transform ease-in-out duration-300;
+    @apply relative flex justify-start gap-4 rounded-lg p-3 transform ease-in-out duration-200;
   }
 
   .pagination {
@@ -108,6 +109,10 @@ select:-webkit-autofill:focus {
 
   .rightsidebar {
     @apply sticky right-0 top-0 z-20 flex h-screen w-fit flex-col justify-between gap-12 overflow-auto border-l border-l-dark-4 bg-dark-2 px-10 pb-6 pt-28 max-xl:hidden;
+  }
+
+  .gradient-bg{
+    @apply bg-gradient-to-br from-purple-300 via-primary-500 to-pink-400
   }
 }
 

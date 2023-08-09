@@ -9,7 +9,7 @@ import { SignedIn, SignOutButton, useAuth } from "@clerk/nextjs";
 const LeftSidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const {userId} = useAuth();
+  const { userId } = useAuth();
 
   return (
     <section className="custom-scrollbar leftsidebar">
@@ -19,26 +19,30 @@ const LeftSidebar = () => {
             (pathname.includes(link.route) && link.route.length > 1) ||
             pathname === link.route;
 
-            if(link.route==='/profile'){
-              link.route = `${link.route}/${userId}`
-            }
+          if (link.route === "/profile") {
+            link.route = `${link.route}/${userId}`;
+          }
 
           return (
-            <Link
-              href={link.route}
-              key={link.label}
-              className={`leftsidebar_link ${
-                isActive ? "bg-gradient-to-br from-purple-400 via-primary-500 to-purple-700" : "hover:bg-gradient-to-b from-primary-500/20 to-purple-700/20"
-              }`}
-            >
-              <Image
-                src={link.imgURL}
-                alt={link.label}
-                width={24}
-                height={24}
-              />
-              <p className="text-light-1 max-lg:hidden">{link.label}</p>
-            </Link>
+            <div className={`${isActive ? "gradient-bg rounded-lg p-0.5":" transition-all duration-500 hover:gradient-bg rounded-lg p-0.5 bg-size-200 bg-pos-0 hover:bg-pos-100"} `}>
+              <Link
+                href={link.route}
+                key={link.label}
+                className={`leftsidebar_link ${
+                  isActive
+                    ? "gradient-bg"
+                    : "bg-dark-2"
+                }`}
+              >
+                <Image
+                  src={link.imgURL}
+                  alt={link.label}
+                  width={24}
+                  height={24}
+                />
+                <p className="text-light-1 max-lg:hidden">{link.label}</p>
+              </Link>
+            </div>
           );
         })}
       </div>

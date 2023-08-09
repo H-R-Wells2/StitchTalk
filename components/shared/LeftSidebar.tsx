@@ -28,7 +28,7 @@ const LeftSidebar = () => {
               href={link.route}
               key={link.label}
               className={`leftsidebar_link ${
-                isActive ? "bg-primary-500" : "hover:bg-primary-500/40"
+                isActive ? "bg-gradient-to-br from-purple-400 via-primary-500 to-purple-700" : "hover:bg-gradient-to-b from-primary-500/20 to-purple-700/20"
               }`}
             >
               <Image

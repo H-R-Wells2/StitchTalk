@@ -38,7 +38,6 @@ const ThreadCard = ({
   isComment,
 }: Props) => {
 
-  // console.log(community)
 
   return (
     <article

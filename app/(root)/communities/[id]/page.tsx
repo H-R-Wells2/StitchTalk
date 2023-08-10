@@ -7,12 +7,14 @@ import ThreadsTab from "@/components/shared/ThreadsTab";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchCommunityDetails } from "@/lib/actions/community.actions";
 import UserCard from "@/components/cards/UserCard";
+import { redirect } from "next/navigation";
 
 const page = async ({ params }: { params: { id: string } }) => {
   const user = await currentUser();
   if (!user) return null;
 
   const communityDatails = await fetchCommunityDetails(params.id);
+  if(!communityDatails) redirect('/profile')
 
   return (
     <section>

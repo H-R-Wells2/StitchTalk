@@ -1,5 +1,6 @@
 "use server";
 
+
 import { FilterQuery, SortOrder } from "mongoose";
 
 import Community from "../models/community.model";
@@ -264,7 +265,8 @@ export async function deleteCommunity(communityId: string) {
       throw new Error("Community not found");
     }
 
-    await Thread.deleteMany({ community: communityId });
+    await Thread.deleteMany({ community: "64d4c1eb9a9fb2f0cba42a7b" });
+    console.log("community id:",communityId)
 
     const communityUsers = await User.find({ communities: communityId });
 
@@ -280,4 +282,9 @@ export async function deleteCommunity(communityId: string) {
     console.error("Error deleting community: ", error);
     throw error;
   }
+}
+
+
+export async function deleteTemp(communityId: string){
+  await Thread.deleteMany({ community: "64d4c1eb9a9fb2f0cba42a7b" });
 }

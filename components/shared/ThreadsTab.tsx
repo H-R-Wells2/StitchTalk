@@ -41,10 +41,6 @@ const ThreadsTab = async ({currentUserId, accountId, accountType}:Props) => {
 
   if(accountType === 'Community'){
     result = await fetchCommunityPosts(accountId)
-    // result.threads.map((thread)=>{
-    //   console.log(thread)
-    // })
-    // console.log(result)
   }else{
     result = await fetchUserPosts(accountId)
     

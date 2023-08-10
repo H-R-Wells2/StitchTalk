@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { formatDateString } from "@/lib/utils";
+import DeleteThread from "../forms/DeleteThread";
+import LikeThread from "../forms/LikeThread";
 
 interface Props {
   id: string;
@@ -11,6 +13,7 @@ interface Props {
     name: string;
     image: string;
     id: string;
+    _id: string;
   };
   community: {
     id: string;
@@ -37,12 +40,12 @@ const ThreadCard = ({
   comments,
   isComment,
 }: Props) => {
-
-
   return (
     <article
       className={`flex flex-col w-full rounded-xl transition-all duration-300 ${
-        isComment ? "px-0 xs:px-7" : "bg-dark-2 p-7 hover:shadow-[1px_1px_10px_1px] hover:shadow-purple-400"
+        isComment
+          ? "px-0 xs:px-7"
+          : "bg-dark-2 p-7 hover:shadow-[1px_1px_10px_1px] hover:shadow-purple-400"
       }`}
     >
       <div className="flex items-start justify-between">
@@ -69,13 +72,17 @@ const ThreadCard = ({
 
             <div className={`${isComment && "mb-10"} mt-5 flex flex-col gap-3`}>
               <div className="flex gap-3.5">
-                <Image
-                  src="/assets/heart-gray.svg"
-                  alt="heart"
-                  width={24}
-                  height={24}
-                  className="cursor-pointer object-contain"
+
+
+                {/* Like */}
+                <LikeThread
+                  threadId={JSON.stringify(id)}
+                  userId={author._id.toString()}
                 />
+
+
+
+
                 <Link href={`/thread/${id}`}>
                   <Image
                     src="/assets/reply.svg"
@@ -111,11 +118,17 @@ const ThreadCard = ({
             </div>
           </div>
         </div>
+        <DeleteThread
+          threadId={JSON.stringify(id)}
+          currentUserId={currentUserId}
+          authorId={author.id}
+          parentId={parentId}
+          isComment={isComment}
+        />
       </div>
 
-
       {!isComment && comments.length > 0 && (
-        <div className='ml-1 mt-3 flex items-center gap-2'>
+        <div className="ml-1 mt-3 flex items-center gap-2">
           {comments.slice(0, 2).map((comment, index) => (
             <Image
               key={index}
@@ -128,7 +141,7 @@ const ThreadCard = ({
           ))}
 
           <Link href={`/thread/${id}`}>
-            <p className='mt-1 text-subtle-medium text-gray-1'>
+            <p className="mt-1 text-subtle-medium text-gray-1">
               {comments.length} repl{comments.length > 1 ? "ies" : "y"}
             </p>
           </Link>
@@ -138,9 +151,9 @@ const ThreadCard = ({
       {!isComment && community && (
         <Link
           href={`/communities/${community.id}`}
-          className='mt-5 flex items-center'
+          className="mt-5 flex items-center"
         >
-          <p className='text-subtle-medium text-gray-1'>
+          <p className="text-subtle-medium text-gray-1">
             {formatDateString(createdAt)}
             {community && ` - ${community.name} Community`}
           </p>
@@ -148,11 +161,18 @@ const ThreadCard = ({
           <Image
             src={community.image}
             alt={community.name}
-            width={14}
-            height={14}
-            className='ml-1 rounded-full object-cover'
+            width={18}
+            height={18}
+            className="ml-1 rounded-full object-cover"
           />
         </Link>
+      )}
+      {!isComment && !community && (
+        <div className="mt-5 flex items-center">
+          <p className="text-subtle-medium text-gray-1">
+            {formatDateString(createdAt)}
+          </p>
+        </div>
       )}
     </article>
   );

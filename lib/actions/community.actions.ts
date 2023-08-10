@@ -1,13 +1,11 @@
 "use server";
 
-
 import { FilterQuery, SortOrder } from "mongoose";
 
 import Community from "../models/community.model";
 import Thread from "../models/thread.model";
 import User from "../models/user.model";
 import { connectToDb } from "../mongoose";
-
 
 export async function createCommunity(
   id: string,
@@ -19,7 +17,6 @@ export async function createCommunity(
 ) {
   try {
     connectToDb();
-
 
     const user = await User.findOne({ id: createdById });
 
@@ -68,12 +65,11 @@ export async function fetchCommunityDetails(id: string) {
   }
 }
 
-export async function fetchCommunityPosts(id: string){
+export async function fetchCommunityPosts(id: string) {
   try {
     connectToDb();
 
-    const communityPosts = await Community.findOne({ id: id })
-    .populate({
+    const communityPosts = await Community.findOne({ id: id }).populate({
       path: "threads",
       model: Thread,
       populate: [
@@ -255,7 +251,9 @@ export async function updateCommunityInfo(
 
 export async function deleteCommunity(communityId: string) {
   try {
+    console.log("Checking bitch")
     connectToDb();
+    console.log("first");
 
     const deletedCommunity = await Community.findOneAndDelete({
       id: communityId,
@@ -265,26 +263,22 @@ export async function deleteCommunity(communityId: string) {
       throw new Error("Community not found");
     }
 
-    await Thread.deleteMany({ community: "64d4c1eb9a9fb2f0cba42a7b" });
-    console.log("community id:",communityId)
+    await Thread.deleteMany({ community: deletedCommunity._id });
+    console.log("community id:", deletedCommunity._id);
 
-    const communityUsers = await User.find({ communities: communityId });
+    const communityUsers = await User.find({ communities: deletedCommunity._id });
 
     const updateUserPromises = communityUsers.map((user) => {
-      user.communities.pull(communityId);
+      user.communities.pull(deletedCommunity._id);
       return user.save();
     });
 
     await Promise.all(updateUserPromises);
+    console.log("Deleted Community ",communityId);
 
     return deletedCommunity;
   } catch (error) {
     console.error("Error deleting community: ", error);
     throw error;
   }
-}
-
-
-export async function deleteTemp(communityId: string){
-  await Thread.deleteMany({ community: "64d4c1eb9a9fb2f0cba42a7b" });
 }

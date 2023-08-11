@@ -7,13 +7,13 @@ import LikeThread from "../forms/LikeThread";
 interface Props {
   id: string;
   currentUserId: string;
+  currentUser_id: string;
   parentId: string | null;
   content: string;
   author: {
     name: string;
     image: string;
     id: string;
-    _id: string;
   };
   community: {
     id: string;
@@ -32,6 +32,7 @@ interface Props {
 const ThreadCard = ({
   id,
   currentUserId,
+  currentUser_id,
   parentId,
   content,
   author,
@@ -77,7 +78,7 @@ const ThreadCard = ({
                 {/* Like */}
                 <LikeThread
                   threadId={JSON.stringify(id)}
-                  userId={author._id.toString()}
+                  userId={JSON.stringify(currentUser_id)}
                 />
 
 

@@ -240,14 +240,20 @@ export async function addLikeToThread(threadId: string, userId: string) {
     if (!thread.likes.includes(userId)) {
       thread.likes.push(userId);
       await thread.save();
+      console.log("Liked")
+    }else{
+      thread.likes.pop(userId);
+      await thread.save();
+      console.log("Like removed")
     }
   } catch (err) {
-    console.error("Error while adding comment:", err);
-    throw new Error("Unable to add comment");
+    console.error("Error while adding like:", err);
+    throw new Error("Unable to add like");
   }
 }
 
 export async function isUserLikedThread(threadId: string, userId: string) {
+  connectToDb();
   try {
     const thread = await Thread.findById(threadId);
 
@@ -257,7 +263,7 @@ export async function isUserLikedThread(threadId: string, userId: string) {
 
     return thread.likes.includes(userId);
   } catch (err) {
-    console.error("Error while checking like:", err);
-    throw new Error("Unable to check like");
+    console.error("Error while adding comment:", err);
+    throw new Error("Unable to add comment");
   }
 }

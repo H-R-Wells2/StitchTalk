@@ -1,5 +1,6 @@
 import ThreadCard from "@/components/cards/ThreadCard";
 import { fetchThreads } from "@/lib/actions/thread.actions";
+import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
@@ -10,7 +11,9 @@ export default async function Home() {
 
   if (!user) redirect('/sign-in');
 
-  // console.log(result.threads)
+  const userInfo= await fetchUser(user.id);
+
+  // console.log(JSON.stringify(userInfo._id));
 
 
   return (
@@ -28,6 +31,7 @@ export default async function Home() {
                 key={thread._id}
                 id={thread._id}
                 currentUserId={user?.id || ""}
+                currentUser_id={userInfo._id}
                 parentId={thread.parentId}
                 content={thread.text}
                 author={thread.author}

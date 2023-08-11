@@ -1,13 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
 
 import {
   addLikeToThread,
   isUserLikedThread,
 } from "@/lib/actions/thread.actions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   threadId: string;
@@ -17,10 +16,16 @@ interface Props {
 function LikeThread({ threadId, userId }: Props) {
   const [isLiked, setIsLiked] = useState(false);
 
-  const handleLike = () => {
-    // await addLikeToThread(JSON.parse(threadId), userId);
-    setIsLiked(!isLiked);
-  };
+
+  const temp = async()=>{
+    const test = await isUserLikedThread(JSON.parse(threadId), JSON.parse(userId)) 
+    setIsLiked(test);
+  }
+
+  useEffect(() => {
+    temp()
+  }, [])
+  
 
   return (
     <Image
@@ -29,7 +34,10 @@ function LikeThread({ threadId, userId }: Props) {
       width={24}
       height={24}
       className="cursor-pointer object-contain"
-      onClick={handleLike}
+      onClick={async () => {
+        await addLikeToThread(JSON.parse(threadId), JSON.parse(userId));
+        temp();
+      }}
     />
   );
 }

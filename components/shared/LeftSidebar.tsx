@@ -24,25 +24,23 @@ const LeftSidebar = () => {
           }
 
           return (
-            <div className={`${isActive ? "gradient-bg rounded-lg p-0.5":" transition-all duration-500 hover:gradient-bg rounded-lg p-0.5 bg-size-200 bg-pos-0 hover:bg-pos-100"} `}>
-              <Link
-                href={link.route}
-                key={link.label}
-                className={`leftsidebar_link ${
-                  isActive
-                    ? "gradient-bg"
-                    : "bg-dark-2"
-                }`}
-              >
-                <Image
-                  src={link.imgURL}
-                  alt={link.label}
-                  width={24}
-                  height={24}
-                />
-                <p className="text-light-1 max-lg:hidden">{link.label}</p>
-              </Link>
-            </div>
+            <Link
+              href={link.route}
+              key={link.label}
+              className={`leftsidebar_link ${
+                isActive
+                  ? "gradient-bg gradient-bg rounded-lg"
+                  : "bg-dark-2 transition-all duration-300 hover:shadow-[1px_1px_10px_1px] hover:shadow-purple-400 rounded-lg"
+              }`}
+            >
+              <Image
+                src={link.imgURL}
+                alt={link.label}
+                width={24}
+                height={24}
+              />
+              <p className="text-light-1 max-lg:hidden">{link.label}</p>
+            </Link>
           );
         })}
       </div>

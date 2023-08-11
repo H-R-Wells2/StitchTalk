@@ -6,12 +6,13 @@ import Topbar from "@/components/shared/Topbar";
 import LeftSidebar from "@/components/shared/LeftSidebar";
 import RightSidebar from "@/components/shared/RightSidebar";
 import Bottombar from "@/components/shared/Bottombar";
+import { dark } from '@clerk/themes';
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "StitchTalk",
-  description: "A Next.js 13 StitchTalk Application like Threads",
+  description: "A Next.js 13 app StitchTalk inspired by Threads",
 };
 
 export default function RootLayout({
@@ -20,7 +21,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+    appearance={{
+      baseTheme: dark,
+      variables: {
+        colorPrimary: "#847cfb",
+        colorText: "white"
+      }
+    }
+  }
+  >
       <html lang="en">
         <body className={inter.className}>
           <Topbar />

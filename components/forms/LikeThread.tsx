@@ -17,13 +17,13 @@ function LikeThread({ threadId, userId }: Props) {
   const [isLiked, setIsLiked] = useState(false);
 
 
-  const temp = async()=>{
-    const test = await isUserLikedThread(JSON.parse(threadId), JSON.parse(userId)) 
-    setIsLiked(test);
+  const checkUserLike = async()=>{
+    const isUserLiked = await isUserLikedThread(JSON.parse(threadId), JSON.parse(userId)) 
+    setIsLiked(isUserLiked);
   }
 
   useEffect(() => {
-    temp()
+    checkUserLike()
   }, [])
   
 
@@ -36,7 +36,7 @@ function LikeThread({ threadId, userId }: Props) {
       className="cursor-pointer object-contain"
       onClick={async () => {
         await addLikeToThread(JSON.parse(threadId), JSON.parse(userId));
-        temp();
+        checkUserLike();
       }}
     />
   );

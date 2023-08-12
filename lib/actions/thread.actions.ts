@@ -230,7 +230,6 @@ export async function addLikeToThread(threadId: string, userId: string) {
   connectToDb();
 
   try {
-    console.log(threadId, userId);
     const thread = await Thread.findById(threadId);
 
     if (!thread) {
@@ -240,11 +239,11 @@ export async function addLikeToThread(threadId: string, userId: string) {
     if (!thread.likes.includes(userId)) {
       thread.likes.push(userId);
       await thread.save();
-      console.log("Liked")
+      console.log(userId," Liked ",threadId)
     }else{
       thread.likes.pop(userId);
       await thread.save();
-      console.log("Like removed")
+      console.log(userId, "removed like from ",threadId)
     }
   } catch (err) {
     console.error("Error while adding like:", err);

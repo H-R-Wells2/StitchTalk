@@ -163,6 +163,20 @@ export async function getActivity(userId: string) {
       select: "name image _id",
     });
 
+    // const threads = await Thread.find({ author: userId })
+    //   .populate('likes', '_id image name');
+
+    // const likesInfo = threads.flatMap(thread => {
+    //   return thread.likes.map(user => {
+    //     return {
+    //       threadId: thread._id,
+    //       _id: user._id,
+    //       image: user.image,
+    //       name: user.name,
+    //     };
+    //   });
+    // });
+
     return replies;
   } catch (error) {
     console.error("Error fetching replies: ", error);

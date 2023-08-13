@@ -19,14 +19,14 @@ const UserCard = ({ id, name, username, imgUrl, personType }: Props) => {
   return (
     <article className="user-card">
       <div className="user-card_avatar">
-          <div className="relative h-11 w-11 object-cover">
-            <Image
-              src={imgUrl}
-              alt="Profile Image"
-              fill
-              className="rounded-full object-cover shadow-2xl"
-            />
-          </div>
+        <div className="relative h-11 w-11 object-cover">
+          <Image
+            src={imgUrl}
+            alt="Profile Image"
+            fill
+            className="rounded-full object-cover shadow-2xl"
+          />
+        </div>
         <div className="flex-1 text-ellipsis">
           <h4 className="text-base-semibold text-light-1">{name}</h4>
           <p className="text-small-medium text-gray-1">@{username}</p>

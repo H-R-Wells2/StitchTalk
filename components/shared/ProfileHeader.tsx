@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 interface Props {
   accountId: string;
@@ -20,7 +22,7 @@ const ProfileHeader = ({
   type,
 }: Props) => {
   return (
-    <div className="flex w-full flex-col justify-start">
+    <div className="relative flex w-full flex-col justify-start">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="relative h-20 w-20 object-cover">
@@ -41,6 +43,12 @@ const ProfileHeader = ({
       </div>
 
       <p className="mt-6 max-w-lg text-base-regular text-light-2">{bio}</p>
+      {accountId === authUserId && (
+        <Link href={"/edit"} className="absolute right-0 mt-6 mr-6 ">
+          <Button variant="outline">Edit</Button>
+        </Link>
+      )}
+
       <div className="mt-12 h-0.5 w-full bg-dark-3" />
     </div>
   );

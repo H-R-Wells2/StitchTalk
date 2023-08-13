@@ -206,7 +206,7 @@ const AccountProfile = ({ user, btnTitle }: props) => {
           type="submit"
           className="bg-primary-500 hover:bg-primary-500/70"
         >
-          Submit
+          {btnTitle}
         </Button>
       </form>
     </Form>

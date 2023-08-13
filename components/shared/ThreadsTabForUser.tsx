@@ -49,6 +49,8 @@ const ThreadsTabForUser = async ({
           />
         ))}
 
+        {tabValue === "threads" && result.threads.length === 0 && <span className="self-center">No Threads Yet</span>}
+
       {tabValue === "replies" &&
         repliesResult.map((thread: any) => (
           <ReppliesTabCard
@@ -61,6 +63,8 @@ const ThreadsTabForUser = async ({
             author={{ name: result.name, image: result.image, id: result.id }}
           />
         ))}
+        {tabValue === "replies" && repliesResult.length === 0 && <span className="self-center">No Replies Yet</span>}
+
     </section>
   );
 };

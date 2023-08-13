@@ -3,11 +3,11 @@ import { currentUser } from "@clerk/nextjs";
 import { communityTabs } from "@/constants";
 
 import ProfileHeader from "@/components/shared/ProfileHeader";
-import ThreadsTab from "@/components/shared/ThreadsTab";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchCommunityDetails } from "@/lib/actions/community.actions";
 import UserCard from "@/components/cards/UserCard";
 import { redirect } from "next/navigation";
+import ThreadsTabForCommunity from "@/components/shared/ThreadsTabForCommunity";
 
 const page = async ({ params }: { params: { id: string } }) => {
   const user = await currentUser();
@@ -51,10 +51,9 @@ const page = async ({ params }: { params: { id: string } }) => {
           </TabsList>
 
           <TabsContent value={"threads"} className="w-full text-light-1">
-            <ThreadsTab
+            <ThreadsTabForCommunity
               currentUserId={user.id}
               accountId={communityDatails.id}
-              accountType="Community"
             />
           </TabsContent>
           <TabsContent value={"members"} className="w-full text-light-1">
@@ -65,11 +64,7 @@ const page = async ({ params }: { params: { id: string } }) => {
             </section>
           </TabsContent>
           <TabsContent value={"requests"} className="w-full text-light-1">
-            <ThreadsTab
-              currentUserId={user.id}
-              accountId={communityDatails.id}
-              accountType="Community"
-            />
+            Requests
           </TabsContent>
         </Tabs>
       </div>

@@ -7,9 +7,9 @@ import { dark } from "@clerk/themes";
 const Topbar = () => {
   return (
     <nav className="topbar">
-      <Link href={"/"} className="flex items-center gap-4">
+      <Link href={"/"} className="flex items-center max-xs:gap-1 gap-4">
         <Image src={"/assets/temp.svg"} alt="logo" width={35} height={34} />
-        <p className="text-heading3-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-primary-500 to-pink-400 max-xs:hidden animate-text">
+        <p className="text-heading3-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-primary-500 to-pink-400 animate-text">
           StitchTalk
         </p>
       </Link>

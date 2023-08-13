@@ -239,11 +239,11 @@ export async function addLikeToThread(threadId: string, userId: string) {
     if (!thread.likes.includes(userId)) {
       thread.likes.push(userId);
       await thread.save();
-      console.log(userId," Liked ",threadId)
-    }else{
+      console.log(userId, " Liked ", threadId);
+    } else {
       thread.likes.pop(userId);
       await thread.save();
-      console.log(userId, "removed like from ",threadId)
+      console.log(userId, "removed like from ", threadId);
     }
   } catch (err) {
     console.error("Error while adding like:", err);
@@ -265,4 +265,28 @@ export async function isUserLikedThread(threadId: string, userId: string) {
     console.error("Error while adding comment:", err);
     throw new Error("Unable to add comment");
   }
+}
+
+export async function fetchThreadsWithReplies(userId: string) {
+  connectToDb();
+
+  const threadsWithReplies = await Thread.find({
+    author: userId,
+    children: { $exists: true, $not: { $size: 0 } },
+  })
+    .populate({
+      path: "author",
+      model: User,
+    })
+    .populate({
+      path: "children",
+      populate: {
+        path: "author",
+        model: User,
+        select: "_id name parentId image",
+      },
+    })
+    .sort({ createdAt: "desc" });
+
+  return threadsWithReplies;
 }

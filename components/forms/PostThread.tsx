@@ -70,7 +70,7 @@ const PostThread = ({ userId }: Props) => {
 
         <Button
           type="submit"
-          className="bg-gradient-to-br from-purple-300 via-primary-500 to-pink-400 hover:bg-gradient-to-br hover:from-purple-400 hover:via-primary-500 hover:to-pink-500"
+          className="bg-primary-500 hover:bg-primary-500/90  hover:shadow-[0px_0px_7px_1px] hover:shadow-purple-400"
         >
           Post Thread
         </Button>

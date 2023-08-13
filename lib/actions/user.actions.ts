@@ -157,7 +157,9 @@ export async function getActivity(userId: string) {
     const replies = await Thread.find({
       _id: { $in: childThreadIds },
       author: { $ne: userId },
-    }).populate({
+    })
+    .sort({ createdAt: "desc" })
+    .populate({
       path: "author",
       model: User,
       select: "name image _id",

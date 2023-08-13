@@ -3,6 +3,8 @@ import Link from "next/link";
 import { formatDateString } from "@/lib/utils";
 import DeleteThread from "../forms/DeleteThread";
 import LikeThread from "../forms/LikeThread";
+import ShareThread from "../forms/ShareThread";
+import { fetchThreadById } from "@/lib/actions/thread.actions";
 
 interface Props {
   id: string;
@@ -29,7 +31,7 @@ interface Props {
   isComment?: boolean;
 }
 
-const ThreadCard = ({
+const ThreadCard = async ({
   id,
   currentUserId,
   currentUser_id,
@@ -41,6 +43,8 @@ const ThreadCard = ({
   comments,
   isComment,
 }: Props) => {
+  const thread = await fetchThreadById(id);
+
   return (
     <article
       className={`flex flex-col w-full rounded-xl transition-all duration-300 ${
@@ -73,16 +77,11 @@ const ThreadCard = ({
 
             <div className={`${isComment && "mb-10"} mt-5 flex flex-col gap-3`}>
               <div className="flex gap-3.5">
-
-
                 {/* Like */}
                 <LikeThread
                   threadId={JSON.stringify(id)}
                   userId={JSON.stringify(currentUser_id)}
                 />
-
-
-
 
                 <Link href={`/thread/${id}`}>
                   <Image
@@ -100,13 +99,7 @@ const ThreadCard = ({
                   height={24}
                   className="cursor-pointer object-contain"
                 />
-                <Image
-                  src="/assets/share.svg"
-                  alt="heart"
-                  width={24}
-                  height={24}
-                  className="cursor-pointer object-contain"
-                />
+                <ShareThread threadId={JSON.stringify(id)} />
               </div>
 
               {isComment && comments.length > 0 && (
@@ -173,6 +166,25 @@ const ThreadCard = ({
           <p className="text-subtle-medium text-gray-1">
             {formatDateString(createdAt)}
           </p>
+        </div>
+      )}
+      {isComment && (
+        <div className="mt-7">
+          {thread.children.map((childItem: any) => (
+            <ThreadCard
+              key={childItem._id}
+              id={childItem._id}
+              currentUserId={currentUserId}
+              currentUser_id={currentUser_id}
+              parentId={childItem.parentId}
+              content={childItem.text}
+              author={childItem.author}
+              community={childItem.community}
+              createdAt={childItem.createdAt}
+              comments={childItem.children}
+              isComment
+            />
+          ))}
         </div>
       )}
     </article>

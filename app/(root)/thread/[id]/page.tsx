@@ -33,6 +33,7 @@ async function page({ params }: { params: { id: string } }) {
           community={thread.community}
           createdAt={thread.createdAt}
           comments={thread.children}
+          likesCount={thread.likes.length}
         />
       </div>
       <div className="mt-7">
@@ -54,6 +55,7 @@ async function page({ params }: { params: { id: string } }) {
               community={childItem.community}
               createdAt={childItem.createdAt}
               comments={childItem.children}
+              likesCount={childItem.likes.length}
               isComment
             />
           ))}

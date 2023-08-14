@@ -28,6 +28,7 @@ interface Props {
       image: string;
     };
   }[];
+  likesCount: number;
   isComment?: boolean;
 }
 
@@ -41,6 +42,7 @@ const ThreadCard = async ({
   community,
   createdAt,
   comments,
+  likesCount,
   isComment,
 }: Props) => {
   const thread = await fetchThreadById(id);
@@ -48,15 +50,16 @@ const ThreadCard = async ({
   return (
     <article
       className={`flex flex-col w-full rounded-xl transition-all duration-300 ${
-        isComment
-          ? "px-0 xs:px-7"
-          : "bg-dark-2 p-7"
+        isComment ? "px-0 xs:px-7" : "bg-dark-2 p-7"
       }`}
     >
       <div className="flex items-start justify-between">
         <div className="flex w-full flex-1 flex-row gap-4">
           <div className="flex flex-col items-center">
-            <Link href={`/profile/${author.id}`} className="relative h-11 w-11 object-cover">
+            <Link
+              href={`/profile/${author.id}`}
+              className="relative h-11 w-11 object-cover"
+            >
               <Image
                 src={author.image}
                 alt="profile image"
@@ -75,7 +78,7 @@ const ThreadCard = async ({
             </Link>
             <p className="mt-2 text-small-regular text-light-2">{content}</p>
 
-            <div className={`${isComment && "mb-10"} mt-5 flex flex-col gap-3`}>
+            <div className={`${isComment && "mb-10"} mt-5 flex flex-col `}>
               <div className="flex gap-3.5">
                 {/* Like */}
                 <LikeThread
@@ -101,6 +104,11 @@ const ThreadCard = async ({
                 />
                 <ShareThread threadId={JSON.stringify(id)} />
               </div>
+              {likesCount !== undefined && (
+                <p className="mt-1 text-subtle-medium text-gray-1">
+                  {likesCount} like{likesCount > 1 ? "s" : ""}
+                </p>
+              )}
 
               {isComment && comments.length > 0 && (
                 <Link href={`/thread/${id}`}>
@@ -182,6 +190,7 @@ const ThreadCard = async ({
               community={childItem.community}
               createdAt={childItem.createdAt}
               comments={childItem.children}
+              likesCount={childItem.likes.length}
               isComment
             />
           ))}

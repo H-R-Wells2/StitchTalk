@@ -2,30 +2,32 @@ import { fetchUser, fetchUserPosts } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 import ThreadCard from "../cards/ThreadCard";
 import ReppliesTabCard from "../cards/RepliesTabCard";
-import { fetchThreadsWithReplies } from "@/lib/actions/thread.actions";
 
 interface Props {
   currentUserId: string;
   accountId: string;
   tabValue?: string;
+  repliesResult? : any;
 }
 
 const ThreadsTabForUser = async ({
   currentUserId,
   accountId,
   tabValue,
+  repliesResult
 }: Props) => {
   // own info
   const userInfo = await fetchUser(currentUserId);
 
-  // info of user we are visiting
-  const userInfo2 = await fetchUser(accountId);
+
 
   const result = await fetchUserPosts(accountId);
-  const repliesResult = await fetchThreadsWithReplies(userInfo2._id);
+  // const repliesResult = await fetchThreadsWithReplies(userInfo2._id);
 
-  // console.log(userInfo2)
-  // console.log(repliesResult);
+  // const totalReplies = repliesResult.reduce((total, thread) => {
+  //   return total + thread.children.length;
+  // }, 0);
+
 
   if (!result) {
     redirect("/");
@@ -46,10 +48,13 @@ const ThreadsTabForUser = async ({
             community={thread.community}
             createdAt={thread.createdAt}
             comments={thread.children}
+            likesCount={thread.likes.length}
           />
         ))}
 
-        {tabValue === "threads" && result.threads.length === 0 && <span className="self-center">No Threads Yet</span>}
+      {tabValue === "threads" && result.threads.length === 0 && (
+        <span className="self-center">No Threads Yet</span>
+      )}
 
       {tabValue === "replies" &&
         repliesResult.map((thread: any) => (
@@ -63,8 +68,9 @@ const ThreadsTabForUser = async ({
             author={{ name: result.name, image: result.image, id: result.id }}
           />
         ))}
-        {tabValue === "replies" && repliesResult.length === 0 && <span className="self-center">No Replies Yet</span>}
-
+      {tabValue === "replies" && repliesResult.length === 0 && (
+        <span className="self-center">No Replies Yet</span>
+      )}
     </section>
   );
 };

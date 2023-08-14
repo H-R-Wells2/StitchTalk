@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { profileTabs } from "@/constants";
 import Image from "next/image";
 import ThreadsTabForUser from "@/components/shared/ThreadsTabForUser";
+import { fetchThreadsWithReplies } from "@/lib/actions/thread.actions";
 
 const page = async ({ params }: { params: { id: string } }) => {
   const user = await currentUser();
@@ -14,6 +15,12 @@ const page = async ({ params }: { params: { id: string } }) => {
   if (!user) return null;
 
   const userInfo = await fetchUser(params.id);
+
+  const repliesResult = await fetchThreadsWithReplies(userInfo._id);
+    const totalReplies = repliesResult.reduce((total, thread) => {
+    return total + thread.children.length;
+  }, 0);
+  // console.log(repliesResult);
 
   if (userInfo?.oboarded === false) {
     redirect("/onboarding");
@@ -47,23 +54,15 @@ const page = async ({ params }: { params: { id: string } }) => {
                     {userInfo?.threads?.length}
                   </p>
                 )}
+                {tab.label === "Replies" && (
+                  <p className="ml-1 rounded-sm bg-light-4 px-2 py-1 !text-tiny-medium text-light-2">
+                    {totalReplies}
+                  </p>
+                )}
               </TabsTrigger>
             ))}
           </TabsList>
 
-          {/* {profileTabs.map((tab) => (
-            <TabsContent
-              key={`content-${tab.label}`}
-              value={tab.value}
-              className="w-full text-light-1"
-            >
-              <ThreadsTabForUser
-                currentUserId={user.id}
-                accountId={userInfo.id}
-                accountType="User"
-              />
-            </TabsContent>
-          ))} */}
           <TabsContent value={"threads"} className="w-full text-light-1">
             <ThreadsTabForUser
               currentUserId={user.id}
@@ -76,6 +75,7 @@ const page = async ({ params }: { params: { id: string } }) => {
               currentUserId={user.id}
               accountId={userInfo.id}
               tabValue="replies"
+              repliesResult={repliesResult}
             />
           </TabsContent>
           <TabsContent value={"tagged"} className="w-full text-light-1">

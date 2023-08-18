@@ -75,19 +75,19 @@ const ReppliesTabCard = async ({
                   <Link href={`/thread/${id}`}>
                     <Image
                       src="/assets/reply.svg"
-                      alt="heart"
+                      alt="reply"
                       width={24}
                       height={24}
                       className="cursor-pointer object-contain"
                     />
                   </Link>
-                  <Image
+                  {/* <Image
                     src="/assets/repost.svg"
-                    alt="heart"
+                    alt="repost"
                     width={24}
                     height={24}
                     className="cursor-pointer object-contain"
-                  />
+                  /> */}
                   <ShareThread threadId={JSON.stringify(id)} />
                 </div>
               </div>

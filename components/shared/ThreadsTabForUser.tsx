@@ -19,14 +19,7 @@ const ThreadsTabForUser = async ({
   // own info
   const userInfo = await fetchUser(currentUserId);
 
-
-
   const result = await fetchUserPosts(accountId);
-  // const repliesResult = await fetchThreadsWithReplies(userInfo2._id);
-
-  // const totalReplies = repliesResult.reduce((total, thread) => {
-  //   return total + thread.children.length;
-  // }, 0);
 
 
   if (!result) {

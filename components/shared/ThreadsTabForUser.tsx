@@ -7,20 +7,19 @@ interface Props {
   currentUserId: string;
   accountId: string;
   tabValue?: string;
-  repliesResult? : any;
+  repliesResult?: any;
 }
 
 const ThreadsTabForUser = async ({
   currentUserId,
   accountId,
   tabValue,
-  repliesResult
+  repliesResult,
 }: Props) => {
   // own info
   const userInfo = await fetchUser(currentUserId);
 
   const result = await fetchUserPosts(accountId);
-
 
   if (!result) {
     redirect("/");

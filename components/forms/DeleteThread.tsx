@@ -80,7 +80,12 @@ function DeleteThread({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={removeThread} className="bg-red-600/70 hover:bg-red-800 transition-none duration-0">Continue</AlertDialogAction>
+          <AlertDialogAction
+            onClick={removeThread}
+            className="bg-red-600/70 hover:bg-red-800 transition-none duration-0"
+          >
+            Continue
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

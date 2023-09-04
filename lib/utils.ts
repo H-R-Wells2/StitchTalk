@@ -29,7 +29,6 @@ export function formatDateString(dateString: string) {
   return `${time} - ${formattedDate}`;
 }
 
-
 export function formatThreadCount(count: number): string {
   if (count === 0) {
     return "No Threads";

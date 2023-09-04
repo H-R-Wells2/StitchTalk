@@ -14,7 +14,7 @@ const page = async ({ params }: { params: { id: string } }) => {
   if (!user) return null;
 
   const communityDatails = await fetchCommunityDetails(params.id);
-  if(!communityDatails) redirect('/profile')
+  if (!communityDatails) redirect("/profile");
 
   return (
     <section>
@@ -59,7 +59,14 @@ const page = async ({ params }: { params: { id: string } }) => {
           <TabsContent value={"members"} className="w-full text-light-1">
             <section className="mt-9 flex flex-col gap-10">
               {communityDatails?.members.map((member: any) => (
-                <UserCard key={member.id} id={member.id} name={member.name} username={member.username} imgUrl={member.image} personType="User" />
+                <UserCard
+                  key={member.id}
+                  id={member.id}
+                  name={member.name}
+                  username={member.username}
+                  imgUrl={member.image}
+                  personType="User"
+                />
               ))}
             </section>
           </TabsContent>

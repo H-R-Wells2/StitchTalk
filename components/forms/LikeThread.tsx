@@ -16,16 +16,17 @@ interface Props {
 function LikeThread({ threadId, userId }: Props) {
   const [isLiked, setIsLiked] = useState(false);
 
-
-  const checkUserLike = async()=>{
-    const isUserLiked = await isUserLikedThread(JSON.parse(threadId), JSON.parse(userId)) 
+  const checkUserLike = async () => {
+    const isUserLiked = await isUserLikedThread(
+      JSON.parse(threadId),
+      JSON.parse(userId)
+    );
     setIsLiked(isUserLiked);
-  }
+  };
 
   useEffect(() => {
-    checkUserLike()
-  }, [])
-  
+    checkUserLike();
+  }, []);
 
   return (
     <Image

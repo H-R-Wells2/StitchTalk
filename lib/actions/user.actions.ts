@@ -158,12 +158,12 @@ export async function getActivity(userId: string) {
       _id: { $in: childThreadIds },
       author: { $ne: userId },
     })
-    .sort({ createdAt: "desc" })
-    .populate({
-      path: "author",
-      model: User,
-      select: "name image _id",
-    });
+      .sort({ createdAt: "desc" })
+      .populate({
+        path: "author",
+        model: User,
+        select: "name image _id",
+      });
 
     // const threads = await Thread.find({ author: userId })
     //   .populate('likes', '_id image name');

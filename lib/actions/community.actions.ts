@@ -251,7 +251,7 @@ export async function updateCommunityInfo(
 
 export async function deleteCommunity(communityId: string) {
   try {
-    console.log("Checking bitch")
+    console.log("Checking bitch");
     connectToDb();
     console.log("first");
 
@@ -266,7 +266,9 @@ export async function deleteCommunity(communityId: string) {
     await Thread.deleteMany({ community: deletedCommunity._id });
     console.log("community id:", deletedCommunity._id);
 
-    const communityUsers = await User.find({ communities: deletedCommunity._id });
+    const communityUsers = await User.find({
+      communities: deletedCommunity._id,
+    });
 
     const updateUserPromises = communityUsers.map((user) => {
       user.communities.pull(deletedCommunity._id);
@@ -274,7 +276,7 @@ export async function deleteCommunity(communityId: string) {
     });
 
     await Promise.all(updateUserPromises);
-    console.log("Deleted Community ",communityId);
+    console.log("Deleted Community ", communityId);
 
     return deletedCommunity;
   } catch (error) {

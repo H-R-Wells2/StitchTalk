@@ -7,9 +7,11 @@ interface Props {
   threadId: string;
 }
 
-const ShareThread = ({threadId}:Props) => {
+const ShareThread = ({ threadId }: Props) => {
   const handleCopy = () => {
-    navigator.clipboard.writeText(`https://stitch-talk.vercel.app/thread/${JSON.parse(threadId)}`);
+    navigator.clipboard.writeText(
+      `https://stitch-talk.vercel.app/thread/${JSON.parse(threadId)}`
+    );
     toast({
       title: "URL Copied!",
       description: "URL copied to clipboard",

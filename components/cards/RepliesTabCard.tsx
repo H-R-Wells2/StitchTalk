@@ -34,7 +34,9 @@ const ReppliesTabCard = async ({
     <div>
       <article
         className={`flex flex-col w-full transition-all duration-300 ${
-          isComment ? "px-0 xs:px-7 bg-dark-3 rounded-b-xl" : "bg-dark-2 p-7 rounded-t-xl"
+          isComment
+            ? "px-0 xs:px-7 bg-dark-3 rounded-b-xl"
+            : "bg-dark-2 p-7 rounded-t-xl"
         }`}
       >
         <div className="flex items-start justify-between mt-3">

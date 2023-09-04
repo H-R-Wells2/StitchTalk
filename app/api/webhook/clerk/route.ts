@@ -102,7 +102,6 @@ export const POST = async (request: Request) => {
   // Listen organization membership (member invite & accepted) creation
   if (eventType === "organizationMembership.created") {
     try {
-
       const { organization, public_user_data } = evnt?.data;
       console.log("created", evnt?.data);
 
@@ -126,7 +125,6 @@ export const POST = async (request: Request) => {
   // Listen member deletion event
   if (eventType === "organizationMembership.deleted") {
     try {
-
       const { organization, public_user_data } = evnt?.data;
       console.log("removed", evnt?.data);
 
@@ -147,7 +145,6 @@ export const POST = async (request: Request) => {
   // Listen organization updation event
   if (eventType === "organization.updated") {
     try {
-
       const { id, logo_url, name, slug } = evnt?.data;
       console.log("updated", evnt?.data);
 
@@ -168,7 +165,6 @@ export const POST = async (request: Request) => {
   // Listen organization deletion event
   if (eventType === "organization.deleted") {
     try {
-
       const { id } = evnt?.data;
       console.log("deleted", evnt?.data);
 

@@ -8,14 +8,11 @@ interface Props {
   accountId: string;
 }
 
-const ThreadsTabForCommunity = async ({
-  currentUserId,
-  accountId,
-}: Props) => {
+const ThreadsTabForCommunity = async ({ currentUserId, accountId }: Props) => {
   const userInfo = await fetchUser(currentUserId);
 
   const result = await fetchCommunityPosts(accountId);
-//   console.log(result);
+  //   console.log(result);
 
   if (!result) {
     redirect("/");

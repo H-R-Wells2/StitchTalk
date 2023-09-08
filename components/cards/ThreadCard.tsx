@@ -96,13 +96,13 @@ const ThreadCard = async ({
                   />
                 </Link>
                 {/* To be implemented */}
-                {/* <Image
+                <Image
                   src="/assets/repost.svg"
                   alt="repost"
                   width={24}
                   height={24}
                   className="cursor-pointer object-contain"
-                /> */}
+                />
                 <ShareThread threadId={JSON.stringify(id)} />
               </div>
               {likesCount !== undefined && (

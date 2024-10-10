@@ -20,7 +20,6 @@ const page = async ({ params }: { params: { id: string } }) => {
   const totalReplies = repliesResult.reduce((total, thread) => {
     return total + thread.children.length;
   }, 0);
-  // console.log(repliesResult);
 
   if (userInfo?.oboarded === false) {
     redirect("/onboarding");
